@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Cyber News Intelligence</title>
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <!-- iOS PWA support -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CyberNews Intel" />
+
+  <!-- Theme color for browser UI -->
+  <meta name="theme-color" content="#0a1628" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #0a1628;
+      overflow: hidden;
+    }
+
+    #app-frame {
+      width: 100%;
+      height: 100vh;
+      border: none;
+      display: block;
+    }
+
+    /* Loading splash shown while the Streamlit app boots */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: #0a1628;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: opacity 0.4s ease;
+    }
+
+    #splash img {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 16px;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    #splash p {
+      color: #4dd0e1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.96); }
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="splash">
+    <img src="icon-192.png" alt="Cyber News Intelligence" />
+    <p>Loading Cyber News Intelligence...</p>
+  </div>
+
+  <iframe
+    id="app-frame"
+    src="https://flockscsmv3-main-bxjbqbxzc5mqfwjexmevmp.streamlit.app/?embed=true"
+    title="Cyber News Intelligence Dashboard"
+    allow="clipboard-read; clipboard-write"
+  ></iframe>
+
+  <script>
+    // Hide splash once the iframe content has loaded
+    const frame = document.getElementById('app-frame');
+    const splash = document.getElementById('splash');
+
+    frame.addEventListener('load', () => {
+      setTimeout(() => splash.classList.add('hidden'), 600);
+    });
+
+    // Register service worker for installability
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch((err) => {
+          console.warn('Service worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
